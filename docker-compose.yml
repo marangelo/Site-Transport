@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  wordpress:
+  wrp_Transporte:
     image: wordpress:6.5-apache
     restart: always
     ports:
@@ -13,9 +13,9 @@ services:
     volumes:
       - ./wordpress_data:/var/www/html
     depends_on:
-      - db
+      - db_Transporte
 
-  db:
+  db_Transporte:
     image: mysql:8.0
     restart: always
     environment:
