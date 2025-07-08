@@ -1,30 +1,54 @@
 version: '3.8'
 services:
-  wrp_Transporte:
-    container_name: wrp_Transporte
-    image: wordpress:6.5-apache
+  web_transporte:
+    container_name: cn_transporte
+    image: kooldev/php:7.4-nginx-sqlsrv-prod
     restart: always
+    volumes:
+      - "./www:/app/Transporte"
+      - "./default.tmpl:/kool/default.tmpl"
     ports:
       - "8080:80"
     environment:
-      WORDPRESS_DB_HOST: db_Transporte:3306
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-    volumes:
-      - ./wordpress_data:/var/www/html
-      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
-    depends_on:
-      - db_Transporte
+      - APP_NAME=Transporte
+      - PHP_FPM_LISTEN=/run/php-fpm.sock
+      - NGINX_LISTEN=80
+      - NGINX_ROOT=/app/Transporte
+      - NGINX_INDEX=index.html
+      - NGINX_CLIENT_MAX_BODY_SIZE=25M
+      - NGINX_PHP_FPM=unix:/run/php-fpm.sock
+      - NGINX_FASTCGI_READ_TIMEOUT=60s
+      - NGINX_FASTCGI_BUFFERS=8 8k
+      - NGINX_FASTCGI_BUFFER_SIZE=16k
+      - PHP_UPLOAD_MAX_FILESIZE=50M
+      - PHP_POST_MAX_SIZE=50M
 
-  db_Transporte:
-    container_name: db_Transporte
-    image: mysql:8.0.32
-    restart: always
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ./db_data:/var/lib/mysql
+
+  # wrp_Transporte:
+  #   container_name: wrp_Transporte
+  #   image: wordpress:6.5-apache
+  #   restart: always
+  #   ports:
+  #     - "8080:80"
+  #   environment:
+  #     WORDPRESS_DB_HOST: db_Transporte:3306
+  #     WORDPRESS_DB_USER: ${MYSQL_USER}
+  #     WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+  #     WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+  #   volumes:
+  #     - ./wordpress_data:/var/www/html
+  #     - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+  #   depends_on:
+  #     - db_Transporte
+
+  # db_Transporte:
+  #   container_name: db_Transporte
+  #   image: mysql:8.0.32
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #   volumes:
+  #     - ./db_data:/var/lib/mysql
