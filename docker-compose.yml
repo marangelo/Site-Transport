@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   wrp_Transporte:
+    container_name: wrp_Transporte
     image: wordpress:6.5-apache
     restart: always
     ports:
@@ -16,6 +17,7 @@ services:
       - db_Transporte
 
   db_Transporte:
+    container_name: db_Transporte
     image: mysql:8.0
     restart: always
     environment:
