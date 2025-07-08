@@ -1,0 +1,17 @@
+# Ignora archivos de entorno
+.env
+
+# Ignora volúmenes de Docker
+wordpress_data/
+db_data/
+
+# Ignora archivos de logs
+*.log
+
+# Ignora archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Ignora archivos de configuración de IDEs
+.vscode/
+.idea/ 
