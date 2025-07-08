@@ -18,7 +18,7 @@ services:
 
   db_Transporte:
     container_name: db_Transporte
-    image: mysql:8.0
+    image: mysql:8.0.32
     restart: always
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
