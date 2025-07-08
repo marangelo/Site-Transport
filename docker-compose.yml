@@ -1,15 +1,29 @@
-version: '3.8'
 services:
+  nginx-proxy:
+    #image: jwilder/nginx-proxy:1.7
+    image: jwilder/nginx-proxy:alpine
+    container_name: cn_nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - localnet
+
   web_transporte:
     container_name: cn_transporte
     image: kooldev/php:7.4-nginx-sqlsrv-prod
     restart: always
     volumes:
-      - "./www:/app/Transporte"
+      - "./www/Transporte:/app/Transporte"
       - "./default.tmpl:/kool/default.tmpl"
-    ports:
-      - "8080:80"
+    # ports:
+    #   - "8080:80"
+    networks:
+      - localnet
+
     environment:
+      - VIRTUAL_HOST=transporte.local
       - APP_NAME=Transporte
       - PHP_FPM_LISTEN=/run/php-fpm.sock
       - NGINX_LISTEN=80
@@ -52,3 +66,8 @@ services:
   #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
   #   volumes:
   #     - ./db_data:/var/lib/mysql
+
+
+networks:
+  localnet:
+    driver: bridge
